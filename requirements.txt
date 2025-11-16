@@ -1,0 +1,6 @@
+streamlit
+pyvis
+networkx
+pdfminer.six
+chromadb
+langchain
