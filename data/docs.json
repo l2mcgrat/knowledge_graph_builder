@@ -21,6 +21,26 @@
         "Math",
         "Psychology"
       ]
+    },
+    {
+      "id": "agreeableness_income_disparity",
+      "label": "Agreeableness & Income Disparity",
+      "node_type": "doc",
+      "pdf_file": "agreeableness_income_disparity.pdf",
+      "concepts": [
+        "Psychology",
+        "Business"
+      ]
+    },
+    {
+      "id": "harmonic_oscillator_ladder_operator",
+      "label": "Harmonic Oscillator Ladder Operator",
+      "node_type": "doc",
+      "pdf_file": "harmonic_oscillator_ladder_operator.pdf",
+      "concepts": [
+        "Statistical Mechanics",
+        "Physical Chemistry"
+      ]
     }
   ]
 }

@@ -103,8 +103,10 @@ def main():
 
     # Build edge-based view: for each document node, look at the
     # concepts it connects and expose them as selectable "edges".
-    edge_to_doc = {}
-    edge_options = []
+    # Multiple documents can live on the same conceptual edge, so
+    # we group docs by the unordered pair of their neighbouring
+    # concept nodes.
+    edge_to_docs = {}
     for doc_label in doc_nodes.keys():
         neighbors = list(G.neighbors(doc_label))
         if len(neighbors) < 2:
@@ -112,9 +114,11 @@ def main():
         for i in range(len(neighbors)):
             for j in range(i + 1, len(neighbors)):
                 u, v = neighbors[i], neighbors[j]
-                key = f"{u} 940 {v} (via {doc_label})"
-                edge_to_doc[key] = doc_label
-                edge_options.append(key)
+                a, b = sorted([u, v])
+                key = f"{a} ↔ {b}"
+                edge_to_docs.setdefault(key, []).append(doc_label)
+
+    edge_options = sorted(edge_to_docs.keys())
 
     mode = st.radio("Show documents by:", ["Node", "Edge"])
 
@@ -129,9 +133,17 @@ def main():
             st.info("No edges with associated documents yet.")
         else:
             selected_edge = st.selectbox(
-                "Select an edge (concept pair)", sorted(edge_options)
+                "Select an edge (concept pair)", edge_options
             )
-            selected_doc_label = edge_to_doc.get(selected_edge)
+            docs_for_edge = edge_to_docs.get(selected_edge, [])
+            if not docs_for_edge:
+                st.info("No documents attached to this edge yet.")
+            elif len(docs_for_edge) == 1:
+                selected_doc_label = docs_for_edge[0]
+            else:
+                selected_doc_label = st.selectbox(
+                    "Select a document on this edge", sorted(docs_for_edge)
+                )
 
     if not selected_doc_label:
         return
@@ -158,18 +170,6 @@ def main():
                 )
         else:
             st.write(f"{selected_doc_label} PDF not found at {pdf_path}")
-
-    if tex_path is not None:
-        if tex_path.exists():
-            with open(tex_path, "rb") as f:
-                st.download_button(
-                    label=f"Download {selected_doc_label} (TeX)",
-                    data=f,
-                    file_name=tex_path.name,
-                    mime="text/x-tex",
-                )
-        else:
-            st.write(f"{selected_doc_label} TeX not found at {tex_path}")
 
 if __name__ == "__main__":
     main()

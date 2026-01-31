@@ -1,0 +1,143 @@
+
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{braket} % Dirac notation: \ket{}, \bra{}, \braket{}
+\numberwithin{equation}{section}
+\sisetup{separate-uncertainty=true}
+
+% --- Macros (conflict-safe) ---
+\newcommand{\kB}{k_{\mathrm B}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\h}{\hbar}
+\newcommand{\w}{\omega}
+
+\title{Statistical Mechanics Notes: Quantum Harmonic Oscillator\\\large Ladder Operators, Eigenfunctions, and Thermodynamics}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+These notes derive the one--dimensional quantum harmonic oscillator using ladder operators, obtain normalized eigenfunctions, and compute the canonical partition function and thermodynamic quantities. Extensions to many independent oscillators (molecular normal modes and the Einstein model of crystals) are summarized.
+\end{abstract}
+
+\section{Model and Ladder Algebra}
+Consider a particle of mass $m$ in the quadratic potential $V(x)=\tfrac12 m\w^2 x^2$. The Hamiltonian and canonical commutator are
+\begin{equation}
+\hat H=\frac{\hat p^2}{2m}+\frac12 m\w^2\,\hat x^2, \qquad [\hat x,\hat p]=i\h.
+\label{eq:H}
+\end{equation}
+Define the (dimensionless) ladder operators
+\begin{equation}
+\hat a=\sqrt{\frac{m\w}{2\h}}\,\hat x+\frac{i}{\sqrt{2m\w\h}}\,\hat p, \qquad \hat a^{\dagger}=\sqrt{\frac{m\w}{2\h}}\,\hat x-\frac{i}{\sqrt{2m\w\h}}\,\hat p,
+\label{eq:ladder}
+\end{equation}
+which satisfy
+\begin{equation}
+[\hat a,\hat a^{\dagger}]=1.
+\label{eq:comm}
+\end{equation}
+Inverting \eqref{eq:ladder} gives
+\begin{equation}
+\hat x=\sqrt{\frac{\h}{2m\w}}\,(\hat a+\hat a^{\dagger}), \qquad \hat p=i\sqrt{\frac{m\w\h}{2}}\,(\hat a^{\dagger}-\hat a).
+\label{eq:xp}
+\end{equation}
+Substituting \eqref{eq:xp} into \eqref{eq:H} yields the number--operator form
+\begin{equation}
+\hat H=\h\w\left(\hat a^{\dagger}\hat a+\tfrac12\right)\equiv \h\w\left(\hat N+\tfrac12\right), \qquad \hat N\equiv\hat a^{\dagger}\hat a.
+\label{eq:Hnumber}
+\end{equation}
+
+\section{Ground State and Spectrum}
+Positivity of $\hat N$ implies $\hat N\ket{0}=0$. Equivalently, the ground state obeys the annihilation condition
+\begin{equation}
+\hat a\ket{0}=0.
+\label{eq:a0}
+\end{equation}
+From \eqref{eq:Hnumber} the ground energy is
+\begin{equation}
+E_0=\frac12\h\w.
+\label{eq:E0}
+\end{equation}
+Excited states are created by $\hat a^{\dagger}$,
+\begin{equation}
+\ket{n}=\frac{(\hat a^{\dagger})^n}{\sqrt{n!}}\ket{0}, \qquad n=0,1,2,\dots
+\label{eq:states}
+\end{equation}
+Using $[\hat H,\hat a^{\dagger}]=\h\w\hat a^{\dagger}$, one obtains the spectrum
+\begin{equation}
+\hat H\ket{n}=\h\w\left(n+\tfrac12\right)\ket{n},\qquad E_n=\h\w\left(n+\tfrac12\right).
+\label{eq:En}
+\end{equation}
+The ladder action is
+\begin{equation}
+\hat a\ket{n}=\sqrt{n}\,\ket{n-1},\qquad \hat a^{\dagger}\ket{n}=\sqrt{n+1}\,\ket{n+1}.
+\label{eq:ladderaction}
+\end{equation}
+
+\section{Coordinate--Space Wavefunctions}
+In the $x$ representation, \eqref{eq:a0} reads
+\begin{equation}
+\left(\sqrt{\frac{m\w}{2\h}}\,x+\frac{\h}{\sqrt{2m\w\h}}\,\frac{\dd}{\dd x}\right)\psi_0(x)=0,
+\end{equation}
+which integrates to the normalized ground state
+\begin{equation}
+\psi_0(x)=\left(\frac{m\w}{\pi\h}\right)^{1/4}\!\exp\!\left(-\frac{m\w x^2}{2\h}\right).
+\label{eq:psi0}
+\end{equation}
+Defining $\xi\equiv\sqrt{m\w/\h}\,x$, the excited states are
+\begin{equation}
+\psi_n(x)=\frac{1}{\sqrt{2^n n!}}\left(\frac{m\w}{\pi\h}\right)^{1/4}H_n(\xi)\,\exp\!\left(-\frac{\xi^2}{2}\right), \qquad n=0,1,2,\dots
+\label{eq:psin}
+\end{equation}
+with $H_n$ the Hermite polynomials. The set $\{\psi_n\}$ is orthonormal and complete in $L^2(\mathbb R)$.
+
+\section{Partition Function and Thermodynamics}
+From \eqref{eq:En}, the canonical partition function is the geometric series
+\begin{equation}
+Z(\beta)=\sum_{n=0}^{\infty}\exp\!\left[-\beta\h\w\left(n+\tfrac12\right)\right]=\frac{\ee^{-\beta\h\w/2}}{1-\ee^{-\beta\h\w}}, \qquad \beta\equiv(\kB T)^{-1}.
+\label{eq:Z}
+\end{equation}
+The Helmholtz free energy $F=-\kB T\ln Z$, internal energy $U=-\partial\ln Z/\partial\beta$, heat capacity $C_V=(\partial U/\partial T)_V$, and entropy $S=(U-F)/T$ evaluate to
+\begin{align}
+U(T)&=\frac{\h\w}{2}+\frac{\h\w}{\ee^{\beta\h\w}-1}=\h\w\Big(\tfrac12+\bar n\Big), \qquad \bar n\equiv\frac{1}{\ee^{\beta\h\w}-1},\label{eq:U}\\
+C_V(T)&=\kB\left(\frac{\beta\h\w}{2\sinh(\beta\h\w/2)}\right)^{\!2},\label{eq:Cv}\\
+S(T)&=\kB\left[\frac{\beta\h\w}{\ee^{\beta\h\w}-1}-\ln\!\left(1-\ee^{-\beta\h\w}\right)\right].\label{eq:S}
+\end{align}
+Limits: $T\to0$ gives $U\to\h\w/2$ and $C_V\to0$; $T\to\infty$ yields $U\sim \kB T$ and $C_V\to\kB$ (equipartition).
+
+\section{Many Independent Oscillators}
+\subsection{Molecular Vibrations (Normal Modes)}
+For a molecule with normal--mode frequencies $\{\w_j\}_{j=1}^f$, the vibrational partition function factorizes as
+\begin{equation}
+Z_{\mathrm{vib}}=\prod_{j=1}^{f}\frac{\ee^{-\beta\h\w_j/2}}{1-\ee^{-\beta\h\w_j}},
+\label{eq:Zvib}
+\end{equation}
+with thermodynamic functions obtained by summing the single--mode results \eqref{eq:U}--\eqref{eq:S} over $j$.
+
+\subsection{Crystals (Einstein Model) and Metals}
+In the Einstein model of a solid, each of the $3N$ vibrational degrees of freedom oscillates at $\w_E$:
+\begin{equation}
+Z_{\mathrm{Ein}}=\left[\frac{\ee^{-\beta\h\w_E/2}}{1-\ee^{-\beta\h\w_E}}\right]^{3N}, \qquad C_V^{\mathrm{Ein}}=3N\,\kB\left(\frac{\beta\h\w_E}{2\sinh(\beta\h\w_E/2)}\right)^{\!2}.
+\label{eq:Ein}
+\end{equation}
+Real crystals (including metals) possess phonon branches $\w_{\bm q,s}$; replacing a single $\w$ by the full phonon spectrum amounts to taking a product over modes (or an integral over the phonon density of states). The Einstein model captures high--$T$ Dulong--Petit behavior $C_V\to3N\kB$ and the low--$T$ suppression from discrete quantum levels.
+
+\section{Operator Matrix Elements}
+From \eqref{eq:xp} and \eqref{eq:ladderaction}, moments follow quickly:
+\begin{equation}
+\braket{n|\hat x|n\pm1}=\sqrt{\frac{\h}{2m\w}}\,\sqrt{n+\tfrac{1\mp1}{2}}, \qquad \braket{n|\hat x^2|n}=\frac{\h}{2m\w}(2n+1).
+\label{eq:xmoments}
+\end{equation}
+Such relations connect spectroscopy matrix elements with thermal averages derived from $Z$.
+
+\section{Summary}
+Ladder operators give the compact Hamiltonian \eqref{eq:Hnumber}, the spectrum \eqref{eq:En}, and eigenfunctions \eqref{eq:psin}. The partition function \eqref{eq:Z} leads directly to \eqref{eq:U}--\eqref{eq:S}. Products of single--oscillator partition functions describe molecular vibrations and the Einstein model; replacing the single frequency by the phonon spectrum extends the framework to real solids.
+
+\end{document}
