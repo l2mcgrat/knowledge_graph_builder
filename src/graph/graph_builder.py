@@ -1,5 +1,12 @@
 
+import json
+from pathlib import Path
+
 import networkx as nx
+
+
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+DOCS_PATH = DATA_DIR / "docs.json"
 
 
 def build_graph():
@@ -47,16 +54,30 @@ def build_graph():
     G.add_edge("Thermodynamics", "Statistical Mechanics")
     G.add_edge("Statistical Mechanics", "Physical Chemistry")
 
-    # Document node for the full ideal gas law derivation.
-    # Both the compiled PDF and the TeX source live in the
-    # pdfs/ folder and are mapped as metadata on this node.
-    G.add_node(
-        "Ideal Gas Law",
-        node_type="doc",
-        pdf_file="ideal_gas_law_stat_mech.pdf",
-        tex_file="ideal_gas_law_full_derivation.tex",
-    )
-    G.add_edge("Statistical Mechanics", "Ideal Gas Law")
-    G.add_edge("Ideal Gas Law", "Physical Chemistry")
+    # Load document nodes from JSON so they can scale
+    # independently of this Python file.
+    if DOCS_PATH.exists():
+        with DOCS_PATH.open("r", encoding="utf-8") as f:
+            payload = json.load(f)
+
+        for doc in payload.get("documents", []):
+            label = doc.get("label")
+            if not label:
+                continue
+
+            # Everything except id/label/concepts becomes
+            # node attributes (e.g. pdf_file, tex_file).
+            attrs = {
+                k: v
+                for k, v in doc.items()
+                if k not in {"id", "label", "concepts"}
+            }
+
+            G.add_node(label, **attrs)
+
+            for concept in doc.get("concepts", []):
+                if concept not in G:
+                    G.add_node(concept)
+                G.add_edge(concept, label)
 
     return G

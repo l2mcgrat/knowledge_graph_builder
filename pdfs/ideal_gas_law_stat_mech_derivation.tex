@@ -3,70 +3,62 @@
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{bm}
-\usepackage{physics}
 \usepackage{siunitx}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise,noabbrev]{cleveref}
 \numberwithin{equation}{section}
+\sisetup{separate-uncertainty=true}
 
-% --- Custom macros & notation ---
+% --- Macros (avoid redefining \d which is an accent in LaTeX) ---
 \newcommand{\kB}{k_{\mathrm B}}
 \newcommand{\NA}{N_{\mathrm A}}
 \newcommand{\lamT}{\lambda_{\mathrm T}}
-\newcommand{\d}{\mathrm d}
-\newcommand{\Z}{\mathcal Z}
+\newcommand{\dd}{\mathrm d}  % differential symbol
+\newcommand{\ee}{\mathrm e}  % exponential base
 
-\title{A Complete First--Principles Derivation of the Ideal Gas Law from Statistical Thermodynamics}
+\title{Ideal Gas Law from Statistical Thermodynamics via the 3D Particle-in-a-Box\\\large Complete, Step-by-Step Derivation}
 \author{}
 \date{\today}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-We derive $PV=N\kB T$ from quantum mechanics and statistical thermodynamics without skipping steps. Beginning with the eigenproblem of a nonrelativistic particle in a 3D box, we build the canonical partition function $Z_1$ exactly, pass to the continuum in the classical limit by controlled estimates, compute $Z_N$ for indistinguishable particles, obtain the Helmholtz free energy, and extract the pressure. We also present (i) an equivalent phase--space derivation, (ii) the Sackur--Tetrode entropy, and (iii) comments on the validity conditions.
+We derive $PV=N\kB T$ from quantum mechanics and statistical thermodynamics without skipped steps. Starting from the 3D particle-in-a-box spectrum we build $Z_1$, pass to the continuum with controlled errors, construct $Z_N$ for indistinguishable particles, obtain $F$, and extract $P$. A classical phase-space derivation, the Sackur--Tetrode entropy, and validity conditions are included.
 \end{abstract}
 
 \section{Quantum Mechanics of a Particle in a Cubic Box}
-Consider a particle of mass $m$ confined to a cube $V=[0,L]^3$ with infinite walls. The time--independent Schr\"odinger equation is
+A particle of mass $m$ confined to $V=[0,L]^3$ with infinite walls obeys
 \begin{equation}
--\frac{\hbar^2}{2m}\nabla^2\psi(\bm r)=E\psi(\bm r),\qquad \psi(0,y,z)=\psi(L,y,z)=\cdots=0.
+-\frac{\hbar^2}{2m}\nabla^2\psi(\bm r)=E\psi(\bm r),\qquad \psi\big|_{\partial V}=0.
 \label{eq:TISE}
 \end{equation}
-Separation of variables $\psi(x,y,z)=X(x)Y(y)Z(z)$ reduces \cref{eq:TISE} to three 1D infinite--well problems with solutions
-\begin{align}
-X_{n_x}(x)&=\sqrt{\tfrac{2}{L}}\sin(\tfrac{n_x\pi x}{L}),& n_x&=1,2,\dots,\\
-Y_{n_y}(y)&=\sqrt{\tfrac{2}{L}}\sin(\tfrac{n_y\pi y}{L}),& n_y&=1,2,\dots,\\
-Z_{n_z}(z)&=\sqrt{\tfrac{2}{L}}\sin(\tfrac{n_z\pi z}{L}),& n_z&=1,2,\dots.
-\end{align}
-The normalized eigenfunctions are $\psi_{\bm n}=X_{n_x}Y_{n_y}Z_{n_z}$ with quantum numbers $\bm n=(n_x,n_y,n_z)\in\mathbb N^3$ and energies
+Separation of variables gives normalized eigenfunctions and energies
 \begin{equation}
-E_{\bm n}=\frac{\hbar^2\pi^2}{2mL^2}(n_x^2+n_y^2+n_z^2).
+E_{\bm n}=\frac{\hbar^2\pi^2}{2mL^2}\left(n_x^2+n_y^2+n_z^2\right),\qquad \bm n=(n_x,n_y,n_z)\in\mathbb N^3.
 \label{eq:boxE}
 \end{equation}
 
-\section{Exact One--Particle Partition Function and Classical Limit}
-The canonical partition function for a single particle reads
+\section{Single-Particle Partition Function: Exact Sum and Classical Limit}
+The canonical one-particle partition function is
 \begin{equation}
 Z_1(T,V)=\sum_{n_x=1}^{\infty}\sum_{n_y=1}^{\infty}\sum_{n_z=1}^{\infty}\exp\!\left[-\beta\,\frac{\hbar^2\pi^2}{2mL^2}(n_x^2+n_y^2+n_z^2)\right],\qquad \beta\equiv(\kB T)^{-1}.
 \label{eq:Z1sumExact}
 \end{equation}
-Define $a\equiv \beta\hbar^2\pi^2/(2mL^2)>0$. Then \cref{eq:Z1sumExact} factorizes into a product of three identical 1D sums,
+Setting $a\equiv \beta\hbar^2\pi^2/(2mL^2)$, the sum factorizes:
 \begin{equation}
-Z_1=\Bigg[\sum_{n=1}^{\infty}e^{-a n^2}\Bigg]^3.
+Z_1=\Bigg[\sum_{n=1}^{\infty}\ee^{-a n^2}\Bigg]^3.
 \label{eq:factor}
 \end{equation}
-The 
-\emph{classical (high--$T$/large--$L$) limit} means the spacing between neighboring energy levels is much smaller than $\kB T$, equivalently $a\ll 1$. In this regime we may replace the discrete sum by an integral with a controlled error using the Euler--Maclaurin formula or the bound
+In the classical (high-$T$/large-$L$) limit $a\ll 1$, the Riemann-sum bounds
 \begin{equation}
-\int_0^{\infty}e^{-a x^2}\,\d x-\tfrac{1}{2}e^{-a} 
-\;<\; \sum_{n=1}^{\infty}e^{-a n^2} 
-\;<\; \int_0^{\infty}e^{-a x^2}\,\d x
-\qquad (a>0),
+\int_0^{\infty}\ee^{-a x^2}\,\dd x-\tfrac{1}{2}\ee^{-a}
+\;<\; \sum_{n=1}^{\infty}\ee^{-a n^2}
+\;<\; \int_0^{\infty}\ee^{-a x^2}\,\dd x\qquad(a>0)
 \end{equation}
-which shows the relative error vanishes as $a\to 0^+$. Using the Gaussian integral
+show the relative error vanishes as $a\to0^+$. Using
 \begin{equation}
-\int_0^{\infty}e^{-a x^2}\,\d x=\frac{1}{2}\sqrt{\frac{\pi}{a}},
+\int_0^{\infty}\ee^{-a x^2}\,\dd x=\frac{1}{2}\sqrt{\frac{\pi}{a}},
 \label{eq:halfGaussian}
 \end{equation}
 we obtain
@@ -74,74 +66,68 @@ we obtain
 Z_1\simeq\left(\tfrac{1}{2}\sqrt{\tfrac{\pi}{a}}\right)^3=\frac{1}{8}\left(\frac{2mL^2}{\beta\hbar^2\pi}\right)^{3/2}.
 \label{eq:Z1a}
 \end{equation}
-Now substitute $V=L^3$, $\beta^{-1}=\kB T$, and $h=2\pi\hbar$ to arrive at the standard form
+With $V=L^3$, $\beta^{-1}=\kB T$, and $h=2\pi\hbar$,
 \begin{equation}
-Z_1=V\left(\frac{2\pi m\kB T}{h^2}\right)^{3/2}=\frac{V}{\lamT^3},
-\qquad \lamT\equiv\frac{h}{\sqrt{2\pi m\kB T}}\,.
+\boxed{\;Z_1=V\left(\frac{2\pi m\kB T}{h^2}\right)^{3/2}=\frac{V}{\lamT^3},\qquad \lamT\equiv\frac{h}{\sqrt{2\pi m\kB T}}\;}
 \label{eq:Z1Thermal}
 \end{equation}
-\paragraph{Remark on density of states.} Equivalently, counting states in the first octant of $\bm n$--space gives the number of states with $E_{\bm n}\le E$ as $\tfrac{1}{8}\times \tfrac{4}{3}\pi R^3$ with $R^2\equiv (2mL^2/\hbar^2\pi^2)E$. Differentiating yields the 1--particle density of states $g(E)=\tfrac{V}{4\pi^2}\left(\tfrac{2m}{\hbar^2}\right)^{3/2}\!\sqrt{E}$, and integrating $\int_0^\infty g(E)e^{-\beta E}\,\d E$ reproduces \cref{eq:Z1Thermal}.
+\paragraph{Density of states route.} Counting $\bm n$-points in the first octant: $N(E)=\tfrac{1}{8}\cdot\tfrac{4}{3}\pi R^3$ with $R^2=(2mL^2/\hbar^2\pi^2)E$. Then $g(E)=\dd N/\dd E=\tfrac{V}{4\pi^2}\left(\tfrac{2m}{\hbar^2}\right)^{3/2}\!\sqrt{E}$ and $Z_1=\int_0^\infty g(E)\ee^{-\beta E}\,\dd E$ gives \cref{eq:Z1Thermal}.
 
 \section{N Noninteracting Indistinguishable Particles}
-For $N$ noninteracting particles the many--body Hamiltonian is additive, hence the classical Maxwell--Boltzmann regime gives
+For $N$ noninteracting particles in the Maxwell--Boltzmann regime,
 \begin{equation}
-Z_N(T,V)=\frac{Z_1^N}{N!}=\frac{1}{N!}\left(\frac{V}{\lamT^3}\right)^N.
+\boxed{\;Z_N(T,V)=\frac{Z_1^N}{N!}=\frac{1}{N!}\left(\frac{V}{\lamT^3}\right)^N\;}
 \label{eq:ZNfull}
 \end{equation}
-The factor $1/N!$ enforces indistinguishability and resolves the Gibbs paradox. The classical limit requires the small degeneracy parameter $n\lamT^3\ll 1$ with $n\equiv N/V$.
+with degeneracy parameter $n\lamT^3\ll1$ and $n\equiv N/V$.
 
-\section{Helmholtz Free Energy and the Pressure}
+\section{Helmholtz Free Energy and Pressure}
 The Helmholtz free energy is
 \begin{equation}
 F(T,V,N)=-\kB T\ln Z_N=-\kB T\big[N\ln V-3N\ln\lamT-\ln N!\big].
 \label{eq:Fraw}
 \end{equation}
-Using Stirling with its first correction,
+Using Stirling’s expansion
 \begin{equation}
-\ln N! = N\ln N-N+\tfrac{1}{2}\ln(2\pi N)+\mathcal O\!\left(\frac{1}{N}\right),
+\ln N!=N\ln N-N+\tfrac{1}{2}\ln(2\pi N)+\mathcal O\!\left(\frac{1}{N}\right),
 \label{eq:stirling}
 \end{equation}
-we may write
+we can write
 \begin{align}
-F(T,V,N) &= -N\kB T\ln V +3N\kB T\ln\lamT +\kB T\,\ln N! \\
-&= -N\kB T\ln\!\left(\frac{V}{N}\right)+3N\kB T\ln\lamT +\tfrac{1}{2}\kB T\ln(2\pi N)+\mathcal O\!\left(\tfrac{\kB T}{N}\right).
+F(T,V,N)&=-N\kB T\ln\!\left(\frac{V}{N}\right)+3N\kB T\ln\lamT +\tfrac{1}{2}\kB T\ln(2\pi N)+\mathcal O\!\left(\tfrac{\kB T}{N}\right).
 \label{eq:Fexpanded}
 \end{align}
-Since $\lamT$ does not depend on $V$, the pressure follows from
+Since $\lamT$ is independent of $V$,
 \begin{equation}
-P= -\left(\frac{\partial F}{\partial V}\right)_{T,N}= -\Big( -N\kB T\,\frac{1}{V}\Big)=\frac{N\kB T}{V}.
+\boxed{\;P=-\left(\frac{\partial F}{\partial V}\right)_{T,N}=\frac{N\kB T}{V}\;}
 \label{eq:Pressure}
 \end{equation}
 
 \section{Equation of State}
-Rearranging \cref{eq:Pressure} yields
+Rearranging \cref{eq:Pressure},
 \begin{equation}
-PV=N\kB T.
+\boxed{\;PV=N\kB T\;}
 \label{eq:IGL}
 \end{equation}
-Writing $N=n\,\NA$ and $R\equiv \NA\kB$ gives $PV=nRT$.
+and with $N=n\,\NA$, $R\equiv \NA\kB$ one gets $PV=nRT$.
 
-\section{Equivalent Phase--Space Derivation (Classical)}
-For completeness, we derive \cref{eq:Z1Thermal} from classical phase space. The canonical partition function for one particle is
+\section{Classical Phase--Space Derivation}
+The canonical integral for one particle is
 \begin{equation}
-Z_1=\frac{1}{h^3}\int_{V}\d^3x\int_{\mathbb R^3}\exp\!\left(-\beta\,\frac{\bm p^2}{2m}\right)\,\d^3p 
-=\frac{V}{h^3}\left(\int_{-\infty}^{\infty}e^{-\beta p^2/2m}\,\d p\right)^{\!3}.
+Z_1=\frac{1}{h^3}\int_V\dd^3x\int_{\mathbb R^3}\ee^{-\beta\,\bm p^2/2m}\,\dd^3p
+=\frac{V}{h^3}\left(\int_{-\infty}^{\infty}\ee^{-\beta p^2/2m}\,\dd p\right)^{\!3}.
 \end{equation}
-Using $\int_{-\infty}^{\infty}e^{-\alpha p^2}\,\d p=\sqrt{\pi/\alpha}$ with $\alpha=\beta/(2m)$ gives
-\begin{equation}
-Z_1=V\left(\frac{2\pi m}{\beta h^2}\right)^{3/2}=\frac{V}{\lamT^3},
-\end{equation}
-which matches the quantum counting result in the classical limit. For $N$ indistinguishable particles, $Z_N=Z_1^N/N!$ and the remainder of the derivation is identical.
+Using $\int_{-\infty}^{\infty}\ee^{-\alpha p^2}\,\dd p=\sqrt{\pi/\alpha}$ with $\alpha=\beta/(2m)$ yields $Z_1=V(2\pi m/\beta h^2)^{3/2}=V/\lamT^3$, consistent with the quantum counting.
 
 \section{Entropy: Sackur--Tetrode}
-From \cref{eq:Fexpanded}, the entropy $S=-(\partial F/\partial T)_{V,N}$ evaluates to
+From \cref{eq:Fexpanded},
 \begin{equation}
-S= N\kB\left[\ln\!\left(\frac{V}{N\lamT^3}\right)+\frac{5}{2}\right] + \mathcal O\!\left(\frac{1}{N}\right),
+S= -\left(\frac{\partial F}{\partial T}\right)_{V,N}
+= N\kB\left[\ln\!\left(\frac{V}{N\lamT^3}\right)+\frac{5}{2}\right] + \mathcal O\!\left(\frac{1}{N}\right).
 \label{eq:ST}
 \end{equation}
-which is the Sackur--Tetrode formula for a monatomic ideal gas in the classical (nondegenerate) regime.
 
-\section{Validity and Limits}
-The derivation requires: (i) noninteracting particles; (ii) classical limit $n\lamT^3\ll1$ (no quantum degeneracy); (iii) $L$ much larger than the thermal de~Broglie wavelength so that sums may be replaced by integrals; and (iv) thermodynamic limit $N,V\to\infty$ with $N/V$ fixed to suppress $\mathcal O(1/N)$ corrections.
+\section{Validity}
+Assumptions: noninteracting particles; classical (nondegenerate) limit $n\lamT^3\ll1$; $L\gg \lamT$ for replacing sums by integrals; and the thermodynamic limit $N,V\to\infty$ with $N/V$ fixed so that $\mathcal O(1/N)$ terms vanish.
 
 \end{document}

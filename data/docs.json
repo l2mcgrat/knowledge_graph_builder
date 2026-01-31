@@ -1,0 +1,26 @@
+{
+  "documents": [
+    {
+      "id": "ideal_gas_law",
+      "label": "Ideal Gas Law",
+      "node_type": "doc",
+      "pdf_file": "ideal_gas_law_stat_mech_derivation.pdf",
+      "tex_file": "ideal_gas_law_stat_mech_derivation.tex",
+      "concepts": [
+        "Statistical Mechanics",
+        "Physical Chemistry"
+      ]
+    },
+    {
+      "id": "big5_math_context",
+      "label": "Big Five Mathematical Context",
+      "node_type": "doc",
+      "pdf_file": "big_5_mathematical_context.pdf",
+      "tex_file": "big_5_mathematical_context.tex",
+      "concepts": [
+        "Math",
+        "Psychology"
+      ]
+    }
+  ]
+}
